@@ -6,29 +6,38 @@ from service.auth import generate_tokens, approve_refresh_token
 auth_ns = Namespace('/auth')
 
 
-@auth_ns.route('/')
-class AuthView(Resource):
+@auth_ns.route('/register')
+class RegisterView(Resource):
     def post(self):
-        req_json = request.json
+        """
+        registers a new user
+        """
+        data = request.json
 
-        username = req_json.get('username')
-        password = req_json.get('password')
-        role = req_json.get('role')
+        user_service.create(data)
 
-        if None in [username, password, role]:
-            abort(401)
+        return '', 201
 
-        tokens = generate_tokens(username, password, role)
+@auth_ns.route('/login')
+class LoginView(Resource):
+    def post(self):
+        """generates access and refresh tokens"""
+        email = request.json.get('email')
+        password = request.json.get('password')
 
-        return tokens, 200
+        tokens = generate_tokens(email, password)
+
+        return tokens, 201
 
     def put(self):
-        req_json = request.json
-
-        refresh_token = req_json.get('refresh_token')
+        refresh_token = request.json.get('refresh_token')
 
         tokens = approve_refresh_token(refresh_token)
 
-        return tokens
+        return tokens, 201
+
+
+
+
 
 

@@ -1,4 +1,5 @@
 from dao.director import DirectorDAO
+from dao.model.director import Director
 
 
 class DirectorService:
@@ -8,8 +9,11 @@ class DirectorService:
     def get_one(self, bid):
         return self.dao.get_one(bid)
 
-    def get_all(self):
-        return self.dao.get_all()
+    def get_all(self, page_number):
+        if page_number is None:
+            return self.dao.get_all()
+
+        return self.dao.get_by_page(int(page_number))
 
     def create(self, director_d):
         return self.dao.create(director_d)

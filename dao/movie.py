@@ -1,3 +1,5 @@
+from sqlalchemy import desc
+
 from dao.model.movie import Movie
 
 
@@ -9,16 +11,19 @@ class MovieDAO:
         return self.session.query(Movie).get(bid)
 
     def get_all(self):
-        # А еще можно сделать так, вместо всех методов get_by_*
-        # t = self.session.query(Movie)
-        # if "director_id" in filters:
-        #     t = t.filter(Movie.director_id == filters.get("director_id"))
-        # if "genre_id" in filters:
-        #     t = t.filter(Movie.genre_id == filters.get("genre_id"))
-        # if "year" in filters:
-        #     t = t.filter(Movie.year == filters.get("year"))
-        # return t.all()
         return self.session.query(Movie).all()
+
+    def get_with_filters(self, filters):
+        if filters.get('status') == 'new' and filters.get('page') is not None:
+            page = int(filters.get('page'))
+            return self.session.query(Movie).order_by(desc(Movie.year)).paginate(page=page, per_page=12).items
+
+        if filters.get('status') == 'new':
+            return self.session.query(Movie).order_by(desc(Movie.year))
+
+        if filters.get('page') is not None:
+            page = int(filters.get('page'))
+            return self.session.query(Movie).paginate(page=page, per_page=12).items
 
     def get_by_director_id(self, val):
         return self.session.query(Movie).filter(Movie.director_id == val).all()

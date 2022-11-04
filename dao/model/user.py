@@ -1,4 +1,6 @@
 from marshmallow import Schema, fields
+
+from dao.model.genre import GenreSchema
 from setup_db import db
 
 
@@ -6,13 +8,18 @@ class User(db.Model):
     __tablename__ = 'user'
 
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String)
-    password = db.Column(db.String)
-    role = db.Column(db.String)
+    email = db.Column(db.String(255), nullable=False)
+    password = db.Column(db.String(255), nullable=False)
+    name = db.Column(db.String(255))
+    surname = db.Column(db.String(255))
+    favorite_genre_id = db.Column(db.Integer, db.ForeignKey('genre.id'))
+    favorite_genre = db.relationship('Genre')
 
 
 class UserSchema(Schema):
     id = fields.Int()
-    username = fields.Str()
+    email = fields.Str()
     password = fields.Str()
-    role = fields.Str()
+    name = fields.Str()
+    surname = fields.Str()
+    favorite_genre = fields.Nested(GenreSchema, only=['name'])

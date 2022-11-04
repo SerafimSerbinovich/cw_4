@@ -11,6 +11,10 @@ class DirectorDAO:
     def get_all(self):
         return self.session.query(Director).all()
 
+    def get_by_page(self, page_num):
+        books = self.session.query(Director).paginate(page=page_num, per_page=12).items
+        return books
+
     def create(self, director_d):
         ent = Director(**director_d)
         self.session.add(ent)

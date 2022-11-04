@@ -21,6 +21,11 @@ class UserDAO:
 
         return user
 
+    def get_by_email(self, email: str):
+        user = self.session.query(User).filter(User.email == email.lower()).first()
+
+        return user
+
     def create(self, user_data):
         new_user = User(**user_data)
 

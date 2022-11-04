@@ -11,6 +11,11 @@ class GenreDAO:
     def get_all(self):
         return self.session.query(Genre).all()
 
+    def get_by_page(self, page_number):
+        genres = self.session.query(Genre).paginate(page=page_number, per_page=12).items
+
+        return genres
+
     def create(self, genre_d):
         ent = Genre(**genre_d)
         self.session.add(ent)
