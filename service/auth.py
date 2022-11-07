@@ -7,6 +7,7 @@ from flask import abort
 import jwt
 from constants import ALGO, SECRET, PWD_HASH_ITERATIONS, PWD_HASH_SALT
 from implemented import user_service
+from setup_db import db
 
 
 def generate_tokens(email, password, is_refresh=False):
@@ -63,3 +64,38 @@ def approve_refresh_token(refresh_token):
     email = data.get('user_email')
 
     return generate_tokens(email, None, is_refresh=True)
+
+
+def get_email_from_header(header: str):
+
+    token = header.split('Bearer ')[-1]
+    data_dict = jwt.decode(token, SECRET, ALGO)
+
+    email = data_dict.get('user_email')
+
+    return email
+
+
+def change_the_password(user_email, pass1, pass2):
+
+    user = user_service.get_by_email(user_email)
+
+    db_pass = user.password
+
+    is_confirmed = check_password(db_pass, pass1)
+
+    if is_confirmed:
+
+        user.password = user_service.get_hash(pass2)
+
+        db.session.add(user)
+        db.session.commit()
+
+        return '', 204
+
+    abort(401)
+
+
+
+
+

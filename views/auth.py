@@ -6,7 +6,7 @@ from service.auth import generate_tokens, approve_refresh_token
 auth_ns = Namespace('/auth')
 
 
-@auth_ns.route('/register')
+@auth_ns.route('/register/')
 class RegisterView(Resource):
     def post(self):
         """
@@ -18,10 +18,12 @@ class RegisterView(Resource):
 
         return '', 201
 
-@auth_ns.route('/login')
+@auth_ns.route('/login/')
 class LoginView(Resource):
     def post(self):
-        """generates access and refresh tokens"""
+        """
+        generates access and refresh tokens
+        """
         email = request.json.get('email')
         password = request.json.get('password')
 
@@ -30,6 +32,9 @@ class LoginView(Resource):
         return tokens, 201
 
     def put(self):
+        """
+        updates access and refresh tokens
+        """
         refresh_token = request.json.get('refresh_token')
 
         tokens = approve_refresh_token(refresh_token)

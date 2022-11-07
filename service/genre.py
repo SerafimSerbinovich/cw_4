@@ -13,13 +13,3 @@ class GenreService:
             return self.dao.get_all()
 
         return self.dao.get_by_page(int(page_number))
-
-    def create(self, genre_d):
-        return self.dao.create(genre_d)
-
-    def update(self, genre_d):
-        self.dao.update(genre_d)
-        return self.dao
-
-    def delete(self, rid):
-        self.dao.delete(rid)

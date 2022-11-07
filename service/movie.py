@@ -13,17 +13,3 @@ class MovieService:
             return self.dao.get_all()
 
         return self.dao.get_with_filters(filters)
-
-
-
-
-
-    def create(self, movie_d):
-        return self.dao.create(movie_d)
-
-    def update(self, movie_d):
-        self.dao.update(movie_d)
-        return self.dao
-
-    def delete(self, rid):
-        self.dao.delete(rid)

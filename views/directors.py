@@ -1,4 +1,4 @@
-from decorators import auth_required, admin_required
+from decorators import auth_required
 from flask import request
 from flask_restx import Resource, Namespace
 
@@ -10,19 +10,12 @@ director_ns = Namespace('directors')
 
 @director_ns.route('/')
 class DirectorsView(Resource):
-    # @auth_required
+    @auth_required
     def get(self):
         page_number = request.args.get('page')
         rs = director_service.get_all(page_number)
         res = DirectorSchema(many=True).dump(rs)
         return res, 200
-
-    @admin_required
-    def post(self):
-        req_json = request.json
-        director_service.create(req_json)
-
-        return '', 201
 
 
 @director_ns.route('/<int:rid>')
@@ -33,20 +26,4 @@ class DirectorView(Resource):
         sm_d = DirectorSchema().dump(r)
         return sm_d, 200
 
-    @admin_required
-    def put(self, rid):
-        req_json = request.json
 
-        if 'id' not in req_json:
-            req_json['id'] = rid
-
-        director_service.update(req_json)
-
-        return '', 204
-
-    @admin_required
-    def delete(self, rid):
-
-        director_service.delete(rid)
-
-        return '', 204

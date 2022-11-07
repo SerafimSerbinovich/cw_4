@@ -1,4 +1,4 @@
-from decorators import auth_required, admin_required
+from decorators import auth_required
 from flask import request
 from flask_restx import Resource, Namespace
 
@@ -10,7 +10,7 @@ movie_ns = Namespace('movies')
 
 @movie_ns.route('/')
 class MoviesView(Resource):
-    # @auth_required
+    @auth_required
     def get(self):
         status = request.args.get('status')
         page_number = request.args.get('page')
@@ -24,12 +24,6 @@ class MoviesView(Resource):
         res = MovieSchema(many=True).dump(all_movies)
         return res, 200
 
-    @admin_required
-    def post(self):
-        req_json = request.json
-        movie = movie_service.create(req_json)
-        return "", 201, {"location": f"/movies/{movie.id}"}
-
 
 @movie_ns.route('/<int:bid>')
 class MovieView(Resource):
@@ -38,16 +32,3 @@ class MovieView(Resource):
         b = movie_service.get_one(bid)
         sm_d = MovieSchema().dump(b)
         return sm_d, 200
-
-    @admin_required
-    def put(self, bid):
-        req_json = request.json
-        if "id" not in req_json:
-            req_json["id"] = bid
-        movie_service.update(req_json)
-        return "", 204
-
-    @admin_required
-    def delete(self, bid):
-        movie_service.delete(bid)
-        return "", 204
