@@ -3,7 +3,7 @@ from flask_restx import Namespace, Resource
 from implemented import user_service
 from service.auth import generate_tokens, approve_refresh_token
 
-auth_ns = Namespace('/auth')
+auth_ns = Namespace('auth')
 
 
 @auth_ns.route('/register/')

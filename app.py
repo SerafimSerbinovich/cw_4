@@ -1,5 +1,6 @@
-from flask import Flask, render_template
+from flask import Flask
 from flask_restx import Api
+from flask_cors import CORS
 
 from config import Config
 from setup_db import db
@@ -29,10 +30,11 @@ def register_extensions(app):
 
 app = create_app(Config())
 app.debug = True
+CORS(app)
 
 with app.app_context():
     db.create_all()
 
 
 if __name__ == '__main__':
-    app.run(host="localhost", port=5000, debug=True)
+    app.run(port=5000, debug=True)

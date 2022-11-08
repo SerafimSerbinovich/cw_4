@@ -25,7 +25,7 @@ class MoviesView(Resource):
         return res, 200
 
 
-@movie_ns.route('/<int:bid>')
+@movie_ns.route('/<int:bid>/')
 class MovieView(Resource):
     @auth_required
     def get(self, bid):

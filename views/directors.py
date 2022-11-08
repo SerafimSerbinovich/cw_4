@@ -18,7 +18,7 @@ class DirectorsView(Resource):
         return res, 200
 
 
-@director_ns.route('/<int:rid>')
+@director_ns.route('/<int:rid>/')
 class DirectorView(Resource):
     @auth_required
     def get(self, rid):
