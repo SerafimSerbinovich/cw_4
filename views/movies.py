@@ -12,6 +12,11 @@ movie_ns = Namespace('movies')
 class MoviesView(Resource):
     @auth_required
     def get(self):
+        """
+        returns list of movies. Final list depends on
+        the availability of filters(status and page number)
+
+        """
         status = request.args.get('status')
         page_number = request.args.get('page')
 
@@ -29,6 +34,9 @@ class MoviesView(Resource):
 class MovieView(Resource):
     @auth_required
     def get(self, bid):
+        """
+        returns a certain movie
+        """
         b = movie_service.get_one(bid)
         sm_d = MovieSchema().dump(b)
         return sm_d, 200

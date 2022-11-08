@@ -4,10 +4,10 @@ from flask_restx import Namespace, Resource
 
 from decorators import auth_required
 from implemented import user_service
-from service.auth import get_email_from_header, check_password, change_the_password
+from service.auth import get_email_from_header, change_the_password
 
 # creating new namespace
-user_ns = Namespace('/user')
+user_ns = Namespace('user')
 
 # creating schemas for User
 user_schema = UserSchema()
@@ -30,7 +30,7 @@ class UserView(Resource):
 
         certain_user = user_service.get_by_email(email)
 
-        return user_schema.dump(certain_user)
+        return user_schema.dump(certain_user), 200
 
     @auth_required
     def patch(self):
@@ -58,11 +58,12 @@ class UserView(Resource):
 
 @user_ns.route('/password/')
 class UserPasswordView(Resource):
-    """
-    updates password of certain user
-    """
+
     @auth_required
     def put(self):
+        """
+        updates password of certain user
+        """
         password_1 = request.json.get('password_1')
         password_2 = request.json.get('password_2')
         header = request.headers['Authorization']
