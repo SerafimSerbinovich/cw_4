@@ -13,7 +13,7 @@ class MoviesView(Resource):
     @auth_required
     def get(self):
         """
-        returns list of movies. Final list depends on
+        Returns list of movies. Final list depends on
         the availability of filters(status and page number)
 
         """
@@ -25,9 +25,9 @@ class MoviesView(Resource):
             "page": page_number
         }
 
-        all_movies = movie_service.get_all(filters)
-        res = MovieSchema(many=True).dump(all_movies)
-        return res, 200
+        movies = movie_service.get_all(filters)
+        movies_list = MovieSchema(many=True).dump(movies)
+        return movies_list, 200
 
 
 @movie_ns.route('/<int:bid>/')
@@ -35,8 +35,8 @@ class MovieView(Resource):
     @auth_required
     def get(self, bid):
         """
-        returns a certain movie
+        Returns a certain movie
         """
-        b = movie_service.get_one(bid)
-        sm_d = MovieSchema().dump(b)
-        return sm_d, 200
+        certain_movie = movie_service.get_one(bid)
+        movie_dict = MovieSchema().dump(certain_movie)
+        return movie_dict, 200

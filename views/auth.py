@@ -10,7 +10,7 @@ auth_ns = Namespace('auth')
 class RegisterView(Resource):
     def post(self):
         """
-        registers a new user
+        Registers a new user
         """
         data = request.json
 
@@ -22,7 +22,7 @@ class RegisterView(Resource):
 class LoginView(Resource):
     def post(self):
         """
-        generates access and refresh tokens
+        Generates access and refresh tokens
         """
         email = request.json.get('email')
         password = request.json.get('password')
@@ -33,7 +33,7 @@ class LoginView(Resource):
 
     def put(self):
         """
-        updates access and refresh tokens
+        Updates access and refresh tokens
         """
         refresh_token = request.json.get('refresh_token')
 

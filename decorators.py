@@ -1,3 +1,5 @@
+from functools import wraps
+
 import jwt
 from constants import SECRET, ALGO
 from flask import request, abort
@@ -5,6 +7,7 @@ from flask import request, abort
 
 def auth_required(func):
     """checking user's authorization"""
+    @wraps(func)
     def wrapper(*args, **kwargs):
 
         if 'Authorization' not in request.headers:

@@ -19,7 +19,7 @@ class UserView(Resource):
     @auth_required
     def get(self):
         """
-        returns data of certain user
+        Returns data of certain user
         """
         req_header = request.headers['Authorization']
 
@@ -35,7 +35,7 @@ class UserView(Resource):
     @auth_required
     def patch(self):
         """
-        updates name, surname and fav_gen of certain user
+        Updates name, surname and fav_gen of certain user
         """
         req_header = request.headers['Authorization']
 
@@ -62,7 +62,7 @@ class UserPasswordView(Resource):
     @auth_required
     def put(self):
         """
-        updates password of certain user
+        Updates password of certain user
         """
         password_1 = request.json.get('password_1')
         password_2 = request.json.get('password_2')
